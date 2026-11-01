@@ -73,15 +73,43 @@ namespace MindAttic.Chain
         {
             var stock = SettingsStore.Stock.AudioTuning;
             var store = Store;
+            PlayerPreferences preferences;
             try
             {
-                return PlayerPreferences.Load(store, stock);
+                preferences = PlayerPreferences.Load(store, stock);
             }
             catch (Exception e) when (!(e is OutOfMemoryException))
             {
                 Debug.LogWarning($"[Chain] Could not read the player's preferences from {store.Describe}, playing with the stock ones: {e.Message}");
-                return PlayerPreferences.Stock(stock);
+                preferences = PlayerPreferences.Stock(stock);
             }
+
+            ApplySessionMute(preferences);
+            return preferences;
+        }
+
+        /// <summary>
+        /// U.CHN-T108 (U.CHN-T74's original guarantee): <see cref="Profiles.SessionMuted"/> zeroes
+        /// <c>Profile.Settings.Common</c>'s own volumes
+        /// (<see cref="ProfilePreferencesStore"/> reads them through it), but <see cref="PlayerPreferences.Load"/>'s
+        /// one-time stock-volume substitution for a profile this game has not yet stamped (Core, deliberately
+        /// unaware of Unity.Shared's Profiles, UNI-T36) runs after that and always wins (<c>PlayerPreferencesTests
+        /// .AProfileFromBeforeThisGame_TakesTheStockVolumes</c>: the volumes take the stock figures whatever the mute
+        /// flags say), undoing the zero on exactly a profile's first read. Re-applied here, after Load, so a first
+        /// -ever launch under <c>-muted</c>/<c>MINDATTIC_CLI_MUTED=1</c> is silent too -- never written back, since
+        /// nothing here calls <see cref="IPreferencesStore.Write"/>.
+        /// </summary>
+        private static void ApplySessionMute(PlayerPreferences preferences)
+        {
+            if (!Profiles.SessionMuted)
+            {
+                return;
+            }
+
+            preferences.MusicVolume = 0f;
+            preferences.SfxVolume = 0f;
+            preferences.MuteMusic = true;
+            preferences.MuteSfx = true;
         }
 
         private static IPreferencesStore DefaultStore()

@@ -497,7 +497,13 @@ namespace MindAttic.Chain.Tests
         [Test]
         public void EnemyTouchingTheAngel_CostsHp_ThroughTheHurtDelay()
         {
-            _rig.SpawnEnemy(new Vector2(-0.5f, 0f));
+            // -0.2, not the Circle-era -0.5 (U.CHN-T107): angel.json's port.contactShape default has been
+            // Rectangle since U.CHN-T88, and the angel's own rect (Angel.vb's X..X+0.06) sits to the right of
+            // its position, not centred on it, so -0.5 world units (scaled by space.json's lengthScale 9) no
+            // longer reaches the enemy's rectangle at all; -0.2 overlaps it immediately and stays put for every
+            // step below, same as the stationary -0.4/-0.5 this test used back when the port's own default was
+            // still the earlier Circle contact (commit 65eaed3).
+            _rig.SpawnEnemy(new Vector2(-0.2f, 0f));
 
             _rig.Step(0.1f);
             Assert.AreEqual(29, Session.State.Hp);

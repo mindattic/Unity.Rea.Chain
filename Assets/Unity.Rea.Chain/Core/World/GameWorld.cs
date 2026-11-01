@@ -12,12 +12,14 @@ namespace MindAttic.Chain.Core
     /// <see cref="State"/>, <see cref="Players"/> and <see cref="Enemies"/>.
     ///
     /// One <see cref="Step"/> runs the original's frame (Engine.vb oneFrameRender) in the order the port's
-    /// components ran it: each chain swings from its angel's hand (Chain.vb), each enemy seeks, flocks and,
-    /// thrown, knocks the enemies it touches (Enemy.vb, checkFlocking, checkThrowImpact), each grapple arms,
-    /// catches, carries or throws, each mace hits what its swept circle touched (checkMaceImpact), enemies
-    /// touching an angel cost HP (checkAngelHit), each heart falls and sways and heals the angel that touches it
-    /// (Item.vb renderItem, checkItemCollect), and a finished game fades out and resets itself (GameOver,
-    /// Root.vb Reset). While paused nothing moves.
+    /// components ran it: each chain swings from its angel's hand (Chain.vb), each enemy seeks and flocks
+    /// (Enemy.vb, checkFlocking), each grapple arms, catches, carries or throws, each mace hits what its
+    /// swept circle touched (checkMaceImpact), a thrown enemy then knocks the enemies it touches
+    /// (checkThrowImpact, after the mace so a hit lands before a knock could take its target out of
+    /// <see cref="EnemyEntity.CanBeHit"/> first, U.CHN-T106), enemies touching an angel cost HP
+    /// (checkAngelHit), each heart falls and sways and heals the angel that touches it (Item.vb renderItem,
+    /// checkItemCollect), and a finished game fades out and resets itself (GameOver, Root.vb Reset). While
+    /// paused nothing moves.
     ///
     /// <see cref="Reset"/> is the one place a round starts over, whether a player sent
     /// <see cref="ResetGame"/> (the R key) or the game-over fade finished: everything Root.vb's Reset
@@ -775,6 +777,10 @@ namespace MindAttic.Chain.Core
                 StepMace(player);
             }
 
+            // Engine.vb's frame order (RECONSTRUCTION.md 3): checkFlocking, checkMaceImpact, checkThrowImpact,
+            // checkAngelHit -- a thrown enemy's knock runs after the mace, not before it (U.CHN-T106).
+            CheckThrowImpact();
+
             foreach (var player in _players)
             {
                 CheckContact(player);
@@ -847,18 +853,15 @@ namespace MindAttic.Chain.Core
                     // c's, so this enemy is pushed once for each order that intersects; flockSpeed already carries the two
                     // visits of a symmetric overlap, so one intersecting order is half of it.
                     float visits;
-                    bool thrownTouch;
                     if (rectangles)
                     {
                         var mine = boxes.At(here);
                         var theirs = boxes.At(_snapshot[j]);
-                        thrownTouch = HeartFloat.RectIntersect(mine, theirs);
-                        visits = (thrownTouch ? 0.5f : 0f) + (HeartFloat.RectIntersect(theirs, mine) ? 0.5f : 0f);
+                        visits = (HeartFloat.RectIntersect(mine, theirs) ? 0.5f : 0f) + (HeartFloat.RectIntersect(theirs, mine) ? 0.5f : 0f);
                     }
                     else
                     {
-                        thrownTouch = Touching(here, enemy.Radius, _snapshot[j], other.Radius);
-                        visits = thrownTouch ? 1f : 0f;
+                        visits = Touching(here, enemy.Radius, _snapshot[j], other.Radius) ? 1f : 0f;
                     }
 
                     if (visits > 0f && flockSpeed > 0f && other.IsAlive && other.State != EnemyState.Grabbed)
@@ -866,15 +869,54 @@ namespace MindAttic.Chain.Core
                         var tieBreak = enemy.Id.Value < other.Id.Value ? 1 : -1;
                         push += EnemyBrain.FlockPush(here, _snapshot[j], flockSpeed, deltaTime, tieBreak) * visits;
                     }
+                }
 
-                    if (thrownTouch && enemy.Brain.IsThrown && other.CanBeHit)
+                enemy.Position = here + velocity * deltaTime + push;
+            }
+        }
+
+        /// <summary>
+        /// Engine.vb checkThrowImpact: a thrown enemy knocks every live, hittable enemy its rectangle touches as it
+        /// flies, at this frame's (post-flocking, post-mace) positions -- run after <see cref="StepMace"/> so a mace
+        /// hit lands first on an enemy the throw would otherwise have already knocked out of <see cref="EnemyEntity
+        /// .CanBeHit"/> this same frame (U.CHN-T106: checkMaceImpact precedes checkThrowImpact, RECONSTRUCTION.md 3).
+        /// The thrown enemy's own self-intersection (BIBLE D5) is skipped, not knocked a second time by itself.
+        /// </summary>
+        private void CheckThrowImpact()
+        {
+            var rectangles = Config.Enemies.Shape == HitShape.Rectangle;
+            var boxes = Config.Enemies.Box;
+            var count = _enemies.Count;
+            for (var i = 0; i < count; i++)
+            {
+                var enemy = _enemies[i];
+                if (!enemy.IsAlive || !enemy.Brain.IsThrown)
+                {
+                    continue;
+                }
+
+                for (var j = 0; j < count; j++)
+                {
+                    if (j == i)
+                    {
+                        continue;
+                    }
+
+                    var other = _enemies[j];
+                    if (!other.CanBeHit)
+                    {
+                        continue;
+                    }
+
+                    var touching = rectangles
+                        ? HeartFloat.RectIntersect(boxes.At(enemy.Position), boxes.At(other.Position))
+                        : Touching(enemy.Position, enemy.Radius, other.Position, other.Radius);
+                    if (touching)
                     {
                         other.Brain.Knock(enemy.Brain.Velocity);
                         Emit(new EnemyKnocked(enemy.Id, other.Id));
                     }
                 }
-
-                enemy.Position = here + velocity * deltaTime + push;
             }
         }
 

@@ -178,5 +178,6 @@ _Nothing recorded yet._
 | U.CHN-T97 | 2026-10-27 | fix | closed | Embed the standard Unity icon into the deployed exe; current icon is blank | f6827e43ae6cc981afc646729dc562fbb621f26b |
 | U.CHN-T98 | 2026-10-27 | chore | closed | Add .vsconfig; Update README.md, USER_STORIES.md | — |
 | U.CHN-T99 | 2026-10-28 | docs | closed | Update USER_STORIES.md | — |
-| U.CHN-T100 | 2026-10-29 | chore | open | Rename Unity.Chain to Unity.Rea.Chain everywhere: folder, GitHub, namespaces, docs, deployments (identifies it as reverse-engineered) | — |
+| U.CHN-T100 | 2026-10-29 | chore | closed | Rename Unity.Chain to Unity.Rea.Chain everywhere: folder, GitHub, namespaces, docs, deployments (identifies it as reverse-engineered) | 9348299 |
 | U.CHN-T101 | 2026-10-29 | chore | closed | Rename repo to Unity.Rea.Chain: GitHub, local folder, in-repo asmdef/asset tree, ticket DB key | 9a2624c4cb0ae3f289dbebd17eccd89010101832 |
+| U.CHN-T102 | 2026-10-31 | docs | closed | Update USER_STORIES.md | — |

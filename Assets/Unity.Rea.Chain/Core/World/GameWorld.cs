@@ -149,6 +149,16 @@ namespace MindAttic.Chain.Core
         private readonly List<GameEvent> _events = new List<GameEvent>();
         private readonly List<EnemyEntity> _touched = new List<EnemyEntity>();
         private readonly List<float> _touchedAt = new List<float>();
+        /// <summary>
+        /// Enemies the mace has already hit this call to <see cref="Step"/>, cleared once per call (U.CHN-T103).
+        /// A slow host frame can bank more than one <see cref="Settings.PhysicsStepRate"/> sub-step into one call
+        /// (BIBLE D9); the original never ran two of its own frames for one real one, so it could never land two
+        /// mace hits where a caller only sees one <see cref="Step"/>. A knock small enough to already be at or
+        /// under <see cref="EnemyBrain.Settings.RecoverSpeed"/> lets the enemy recover from Hurt in the very next
+        /// sub-step (correct on its own, BIBLE D11's velocity-divided-by-mass knock, GameSettings' "one step of
+        /// still"), and a mace still overlapping it would otherwise hit it again in that same bundled call.
+        /// </summary>
+        private readonly HashSet<EnemyId> _hitThisStep = new HashSet<EnemyId>();
         private readonly Random _random;
         // A separate stream for cosmetic-only randomness (an enemy's starting animation frame, UNI-T19)
         // so it never shifts the gameplay-affecting draws (positions, masses) that _random makes:
@@ -716,6 +726,9 @@ namespace MindAttic.Chain.Core
                 _stepAccumulator = maxBanked;
             }
 
+            // Cleared once a call, not once a sub-step (U.CHN-T103): see _hitThisStep.
+            _hitThisStep.Clear();
+
             var steps = 0;
             while (_stepAccumulator >= fixedStep && steps < TimeScale.MaxSubsteps)
             {
@@ -987,6 +1000,14 @@ namespace MindAttic.Chain.Core
                     grapple.Carry(position);
                     held = enemy;
                     Emit(new Grabbed(player.Id, enemy.Id));
+                    continue;
+                }
+
+                // One sub-step's recovery from Hurt (CanBeHit above) can fall inside the same bundled Step
+                // call as the hit that caused it (U.CHN-T103): the mace has not swept anywhere new, so this
+                // is still the one touch this call found, not a second one.
+                if (!_hitThisStep.Add(enemy.Id))
+                {
                     continue;
                 }
 

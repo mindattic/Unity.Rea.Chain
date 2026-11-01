@@ -181,3 +181,6 @@ _Nothing recorded yet._
 | U.CHN-T100 | 2026-10-29 | chore | closed | Rename Unity.Chain to Unity.Rea.Chain everywhere: folder, GitHub, namespaces, docs, deployments (identifies it as reverse-engineered) | 9348299 |
 | U.CHN-T101 | 2026-10-29 | chore | closed | Rename repo to Unity.Rea.Chain: GitHub, local folder, in-repo asmdef/asset tree, ticket DB key | 9a2624c4cb0ae3f289dbebd17eccd89010101832 |
 | U.CHN-T102 | 2026-10-31 | docs | closed | Update USER_STORIES.md | — |
+| U.CHN-T103 | 2026-11-01 | fix | closed | HitShapeTests: Mace rectangle-vs-circle hit detection wrong on 2 cases (Mace_RectangleHitsAnEnemyItsEdgeIsInside, Mace_RectangleMissesWhereTheCircleHits) (found by /test) | f5b8f75 |
+| U.CHN-T104 | 2026-11-01 | fix | closed | SteerInputTests.SteeredStick_FliesTheAngelThroughTheWorld: stick-to-distance conversion off by 0.117 (expected 4.617, got 4.5) (found by /test) | 13d9aca |
+| U.CHN-T105 | 2026-11-01 | docs | open | Update USER_STORIES.md | — |

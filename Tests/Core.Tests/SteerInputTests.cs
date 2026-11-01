@@ -77,10 +77,14 @@ namespace MindAttic.Chain.Tests
             var start = world.FindPlayer(p0).Flight.Position;
             var steer = new SteerInput(settings.Steering);
 
-            world.Submit(new SteerAngel(p0, steer.Combine(Vec2.Zero, new Vec2(1f, 0f), 0.5f), 0.5f));
+            // A short push, well inside Angel.vb's checkBounds (angel.json boundsX -0.6..0.5, U.CHN-T86): long
+            // enough to prove the stick becomes distance the way the mouse does, short enough that AngelFlight's
+            // faithful bounds clamp (which a half-second full push at the shipped stickSpeed reaches, U.CHN-T104)
+            // never engages and masks what this test is actually checking.
+            world.Submit(new SteerAngel(p0, steer.Combine(Vec2.Zero, new Vec2(1f, 0f), 0.1f), 0.1f));
 
             var moved = world.FindPlayer(p0).Flight.Position - start;
-            Assert.AreEqual(300f * settings.Player.Flight.Sensitivity, moved.X, 1e-4f, "the stick's counts become distance as the mouse's do");
+            Assert.AreEqual(60f * settings.Player.Flight.Sensitivity, moved.X, 1e-4f, "the stick's counts become distance as the mouse's do");
         }
     }
 }

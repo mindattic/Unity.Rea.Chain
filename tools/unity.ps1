@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Runs Unity.Chain in Unity batch mode and surfaces compile/test errors -- the shared helper
+  Runs Unity.Rea.Chain in Unity batch mode and surfaces compile/test errors -- the shared helper
   build.ps1, test.ps1 and run.ps1 all call (same pattern as Unity.Hare, Unity.Eve and
   Unity.Cursory's tools/unity.ps1, and Unity.GridGame's own tools/unity.ps1).
 .EXAMPLE
@@ -25,7 +25,7 @@ if (-not (Test-Path $unity)) { throw "Unity $version not found at $unity" }
 if (Test-Path "$root/Temp/UnityLockfile") {
     $locked = $false
     try { [IO.File]::Open("$root/Temp/UnityLockfile", 'Open', 'ReadWrite', 'None').Close() } catch { $locked = $true }
-    if ($locked) { Write-Error "Unity.Chain is open in the Unity Editor. Close it (File > Quit) and re-run."; exit 3 }
+    if ($locked) { Write-Error "Unity.Rea.Chain is open in the Unity Editor. Close it (File > Quit) and re-run."; exit 3 }
 }
 
 New-Item -ItemType Directory -Force "$root/Logs" | Out-Null
@@ -39,7 +39,7 @@ if ($Extra) { $argList += $Extra.Split(' ') }
 if ($Extra -notmatch 'runTests') { $argList += "-quit" }
 
 $p = Start-Process -FilePath $unity -ArgumentList $argList -Wait -PassThru -NoNewWindow
-Select-String -Path $logFile -Pattern 'error CS|\[Unity\.Chain\]|\[Build\]|Shader error|Compilation failed' -ErrorAction SilentlyContinue |
+Select-String -Path $logFile -Pattern 'error CS|\[Unity\.Rea\.Chain\]|\[Build\]|Shader error|Compilation failed' -ErrorAction SilentlyContinue |
     Select-Object -First 80 | ForEach-Object { Write-Host $_.Line }
 Write-Host "exit=$($p.ExitCode)  log=$logFile"
 exit $p.ExitCode

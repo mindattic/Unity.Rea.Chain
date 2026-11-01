@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
   Regenerates Assets/Scenes/Main.unity and the project settings, then builds the Windows player
-  (Builds/Windows/Unity.Chain.exe), each step in Unity batch mode (tools/unity.ps1 does the work;
+  (Builds/Windows/Unity.Rea.Chain.exe), each step in Unity batch mode (tools/unity.ps1 does the work;
   the Editor must be closed). Mirrors the README's "Build and test" PowerShell block; see
   Unity.SpaceGod's and Unity.GridGame's tools/build.ps1.
 .EXAMPLE

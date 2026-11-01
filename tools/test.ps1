@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Headless verification gate for Unity.Chain: the engine-free Core rules (dotnet test, via
+  Headless verification gate for Unity.Rea.Chain: the engine-free Core rules (dotnet test, via
   run-core-tests.ps1), the EditMode component tests, and the PlayMode suite -- today just
   MainSceneSmokeTests (Assets/Unity.Rea.Chain/Tests/PlayMode) -- each run in Unity batch mode
   (tools/unity.ps1; the Editor must be closed). Mirrors the README's "Build and test" PowerShell

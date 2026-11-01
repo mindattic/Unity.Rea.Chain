@@ -18,9 +18,9 @@ namespace MindAttic.Chain.EditorTools
         private const string IconPath = "Assets/Unity.Rea.Chain/Art/Icon/battle.png";
 
         // The original's and the port's own: https://github.com's reverse-DNS-style identifier for a product
-        // named "Unity.Chain" by "MindAttic" (UnityRonin, the closest sibling to set one, follows the same
+        // named "Unity.Rea.Chain" by "MindAttic" (UnityRonin, the closest sibling to set one, follows the same
         // lowercased-and-despaced scheme).
-        private const string ApplicationIdentifier = "com.mindattic.unitychain";
+        private const string ApplicationIdentifier = "com.mindattic.unityreachain";
 
         private const string DefaultBundleVersion = "0.1.0";
 
@@ -28,7 +28,7 @@ namespace MindAttic.Chain.EditorTools
         public static void Apply()
         {
             PlayerSettings.companyName = "MindAttic";
-            PlayerSettings.productName = "Unity.Chain";
+            PlayerSettings.productName = "Unity.Rea.Chain";
 
             // Form1.vb: Me.ClientSize = New Size(640, 480); windowed (not maximized, not fullscreen), still
             // resizable so WindowAspectLockBehaviour has something to correct and UNI-T59's picker still works.

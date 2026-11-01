@@ -13,7 +13,7 @@ namespace MindAttic.Chain.EditorTools
     /// BIBLE V11), a 75-second loop that <see cref="MusicPlayer"/> plays start to finish on its own
     /// <c>AudioSource</c>; it streams from disk instead of sitting fully decompressed in memory.
     /// Set here, not by hand in the Inspector, so a reimport never silently drops back to an importer
-    /// default that would reintroduce either problem (Unity.Chain's rebuild standard, point 5).
+    /// default that would reintroduce either problem (Unity.Rea.Chain's rebuild standard, point 5).
     /// </summary>
     public sealed class AudioImportSettings : AssetPostprocessor
     {

@@ -7,7 +7,7 @@
   "keyB": "beach",
   "keyN": "utopia",
   "areas": {
-    "_about": "Every picture of gfx/area, by name, as the file Assets/Unity.Chain/Art/Background holds it. beach and utopia are the two Textures.vb loads; the rest sit in the folder unused (512.JPG imported lowercased as 512.jpg; the Copy of landscape.jpg files are duplicates and not imported).",
+    "_about": "Every picture of gfx/area, by name, as the file Assets/Unity.Rea.Chain/Art/Background holds it. beach and utopia are the two Textures.vb loads; the rest sit in the folder unused (512.JPG imported lowercased as 512.jpg; the Copy of landscape.jpg files are duplicates and not imported).",
     "beach": "beach.png",
     "utopia": "utopia.png",
     "landscape": "landscape.jpg",
@@ -17,7 +17,7 @@
     "512": "512.jpg"
   },
   "cube": {
-    "_about": "Cube.vb: matCube1 = Matrix.Scaling(67, 55, 38) on a unit cube centred on the origin, texCube1 = gfx/brick.jpg (as Assets/Unity.Chain/Art/Room holds it) stretched once over each face.",
+    "_about": "Cube.vb: matCube1 = Matrix.Scaling(67, 55, 38) on a unit cube centred on the origin, texCube1 = gfx/brick.jpg (as Assets/Unity.Rea.Chain/Art/Room holds it) stretched once over each face.",
     "size": [67, 55],
     "depth": 38,
     "texture": "brick.jpg"

@@ -1,11 +1,11 @@
 @echo off
-rem Asks first: 1) Deploy & Run pulls latest, always rebuilds, publishes to C:\Apps\Unity.Chain,
+rem Asks first: 1) Deploy & Run pulls latest, always rebuilds, publishes to C:\Apps\Unity.Rea.Chain,
 rem refreshes the Desktop shortcut and launches it (tools\run.ps1 -Force -Launch does the work);
-rem 2) Run just launches the copy already in C:\Apps\Unity.Chain.
+rem 2) Run just launches the copy already in C:\Apps\Unity.Rea.Chain.
 setlocal
-set "EXE=C:\Apps\Unity.Chain\Unity.Chain.exe"
+set "EXE=C:\Apps\Unity.Rea.Chain\Unity.Rea.Chain.exe"
 echo.
-echo   Unity.Chain
+echo   Unity.Rea.Chain
 echo     1^) Deploy ^& Run
 echo     2^) Run
 echo.
@@ -19,7 +19,7 @@ if errorlevel 1 (
     echo   Deploy failed. See Logs\build-scene.log, build-settings.log or build-player.log.
     if exist "%EXE%" (
         echo   Launching the installed copy instead.
-        start "" /d "C:\Apps\Unity.Chain" "%EXE%"
+        start "" /d "C:\Apps\Unity.Rea.Chain" "%EXE%"
     )
     pause
     exit /b 1
@@ -29,7 +29,7 @@ exit /b 0
 
 :run
 if not exist "%EXE%" (
-    echo   Nothing is deployed to C:\Apps\Unity.Chain yet; deploying first.
+    echo   Nothing is deployed to C:\Apps\Unity.Rea.Chain yet; deploying first.
     goto deploy
 )
-start "" /d "C:\Apps\Unity.Chain" "%EXE%" %*
+start "" /d "C:\Apps\Unity.Rea.Chain" "%EXE%" %*

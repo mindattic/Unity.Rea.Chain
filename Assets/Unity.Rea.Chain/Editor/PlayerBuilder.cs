@@ -12,7 +12,7 @@ namespace MindAttic.Chain.EditorTools
     /// </summary>
     public static class PlayerBuilder
     {
-        private const string OutputPath = "Builds/Windows/Unity.Chain.exe";
+        private const string OutputPath = "Builds/Windows/Unity.Rea.Chain.exe";
 
         [MenuItem("MindAttic/Chain/Build Windows Player")]
         public static void BuildWindows()

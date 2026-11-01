@@ -38,7 +38,7 @@ namespace MindAttic.Chain
 
             if (session == null || angel == null || chain == null || mace == null || grapple == null || hud == null)
             {
-                Debug.LogError("[Unity.Chain] ScriptedPlaythrough: Main is missing a piece it needs; the run stops here.");
+                Debug.LogError("[Unity.Rea.Chain] ScriptedPlaythrough: Main is missing a piece it needs; the run stops here.");
                 Application.Quit(1);
                 yield break;
             }
@@ -56,7 +56,7 @@ namespace MindAttic.Chain
                 capturing = CaptureUnity.Engine.Enabled;
                 if (!capturing)
                 {
-                    Debug.LogError("[Unity.Chain] MindAttic.Capture did not start; the run will not be captured.");
+                    Debug.LogError("[Unity.Rea.Chain] MindAttic.Capture did not start; the run will not be captured.");
                     _failed = true;
                 }
             }
@@ -189,14 +189,14 @@ namespace MindAttic.Chain
 
                 if (!_clip.IsCompleted || !_clip.Result.Succeeded)
                 {
-                    Debug.LogError("[Unity.Chain] The highlight clip did not export.");
+                    Debug.LogError("[Unity.Rea.Chain] The highlight clip did not export.");
                     _failed = true;
                 }
             }
 
             if (capturing)
             {
-                Debug.Log("[Unity.Chain] ScriptedPlaythrough captured to " + CaptureUnity.Engine.SessionFolder);
+                Debug.Log("[Unity.Rea.Chain] ScriptedPlaythrough captured to " + CaptureUnity.Engine.SessionFolder);
             }
 
             Application.Quit(_failed ? 1 : 0);
@@ -218,11 +218,11 @@ namespace MindAttic.Chain
             var result = shot.Result;
             if (result.Succeeded)
             {
-                Debug.Log("[Unity.Chain] Captured " + result.PrimaryFile);
+                Debug.Log("[Unity.Rea.Chain] Captured " + result.PrimaryFile);
             }
             else
             {
-                Debug.LogError("[Unity.Chain] Screenshot " + name + " failed: " + result.Error);
+                Debug.LogError("[Unity.Rea.Chain] Screenshot " + name + " failed: " + result.Error);
                 _failed = true;
             }
         }

@@ -44,7 +44,7 @@
       "5": "pearl"
     },
     "files": {
-      "_about": "Every link picture of gfx/chain, by name, as Assets/Unity.Chain/Art/Chain holds it (lowercased .png, the magenta baked to alpha).",
+      "_about": "Every link picture of gfx/chain, by name, as Assets/Unity.Rea.Chain/Art/Chain holds it (lowercased .png, the magenta baked to alpha).",
       "link": "link.png",
       "aqua": "aqua.png",
       "emerald": "emerald.png",
@@ -57,7 +57,7 @@
     "_source": "Chain.vb declares theMaceMode (SpikeBall, Magnet) and maceMode = SpikeBall, but nothing reads or sets it; Textures.vb loads gfx/chain/mace's mace (texMace) and mace2 (texMaceGrapple) at 32 x 32, and magnet.PNG only ships with the project (Chain.vbproj), so the magnet could never be seen (BIBLE D4). The port makes it a skin (UNI-T43): mode is the one every mace starts in, the Player map's ToggleMaceMode (M, a debug key the original lacks) steps to the next; no reset touches it, and the hit, catch and throw are the same whatever the mace wears. Input.vb's left-mouse-down/up also swaps link(Mace).texture to texMaceGrapple while the grapple is armed, over whichever mode is current, reverting to that mode's picture on release (U.CHN-T72).",
     "mode": "SpikeBall",
     "files": {
-      "_about": "Each mode's picture, as Assets/Unity.Chain/Art/Chain holds it (lowercased .png). grapple is not a mode: it is shown over whichever mode is current while the grapple is armed (Input.vb's texMaceGrapple).",
+      "_about": "Each mode's picture, as Assets/Unity.Rea.Chain/Art/Chain holds it (lowercased .png). grapple is not a mode: it is shown over whichever mode is current while the grapple is armed (Input.vb's texMaceGrapple).",
       "SpikeBall": "mace.png",
       "Magnet": "magnet.png",
       "grapple": "mace2.png"

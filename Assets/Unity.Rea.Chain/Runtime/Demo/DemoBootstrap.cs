@@ -109,7 +109,7 @@ namespace MindAttic.Chain
                     var result = shot.Result;
                     if (result.Succeeded)
                     {
-                        Debug.Log("[Unity.Chain] Captured " + result.PrimaryFile);
+                        Debug.Log("[Unity.Rea.Chain] Captured " + result.PrimaryFile);
                     }
                 }
             }

@@ -255,7 +255,7 @@ Checked against `AGENTS.md` (the owner's rebuild standard) and the reference rep
 | URP | Done: a URP pipeline with the 2D renderer (`Assets/Unity.Rea.Chain/Rendering`, built by `Editor/RenderPipelineBuilder`) is assigned in GraphicsSettings and every quality level beside the committed global settings and volume profile; a headless import leaves them unchanged | UNI-T18 |
 | Unity.Shared profiles and settings | Done: `com.mindattic.unity.shared` referenced; volumes, mutes and reduce motion in the profile's common block, resolution, window mode and tuning overrides in its game block, through Core's `IPreferencesStore`; music and SFX play at the profile's volumes (BIBLE §6) | UNI-T36 |
 | UI | Done: `GameHud` is a UI Toolkit tree laid out from `hud.json` (UNI-T50 onward); no IMGUI remains | UNI-T37, done |
-| Project settings | Done: 640x480 windowed default, borderless by default as Form1.vb's form (`WindowFrameBehaviour`, game.json `windowFrame`; BIBLE V12, U.CHN-T76), titled `Unity.Chain` (`productName`, replacing the original's unfinished `*** UNDER DEVELOPMENT ***`), snapped back to 4:3 once a border drag settles and left alone while maximized (`WindowAspectLock`/`WindowAspectLockBehaviour`; BIBLE V12), the Standalone icon from `battle.ico`, a global cursor policy (`CursorPolicy`: hidden and confined from the first frame; BIBLE V18), `applicationIdentifier` (`com.mindattic.unitychain`), company/product name and version set, all applied in code (`Editor/ProjectSettingsBuilder.cs`) | UNI-T38 |
+| Project settings | Done: 640x480 windowed default, borderless by default as Form1.vb's form (`WindowFrameBehaviour`, game.json `windowFrame`; BIBLE V12, U.CHN-T76), titled `Unity.Rea.Chain` (`productName`, replacing the original's unfinished `*** UNDER DEVELOPMENT ***`), snapped back to 4:3 once a border drag settles and left alone while maximized (`WindowAspectLock`/`WindowAspectLockBehaviour`; BIBLE V12), the Standalone icon from `battle.ico`, a global cursor policy (`CursorPolicy`: hidden and confined from the first frame; BIBLE V18), `applicationIdentifier` (`com.mindattic.unityreachain`), company/product name and version set, all applied in code (`Editor/ProjectSettingsBuilder.cs`) | UNI-T38 |
 | Build, test and deploy scripts | Done: `build.bat`, `test.bat`, `run.bat`, `play.bat` over `tools/*.ps1`, plus `run-core-tests.ps1` | UNI-T39, done |
 | README | Rewritten: status, layout, build and test (UNI-T29) | done |
 | BIBLE | `docs/BIBLE.md` written: rules, architecture, data, fixed defects, deviations (UNI-T29) | done |
@@ -321,7 +321,7 @@ chain-physics.md (game over freezes until a click) is superseded by UNI-T28.
 ## 7. Scripted capture (U.CHN-T62)
 
 Row 41's "done, verified by play" is a capture-enabled Windows player (`MindAttic ▸ Capture ▸ Build Windows
-Player (Capture Enabled)`, `Builds/Capture/Unity.Chain.exe`) run with `-demo -capture video` (`tools/play.ps1 -Capture video`, muted). `-demo`
+Player (Capture Enabled)`, `Builds/Capture/Unity.Rea.Chain.exe`) run with `-demo -capture video` (`tools/play.ps1 -Capture video`, muted). `-demo`
 (`DemoBootstrap`) adds a `DemoSplashShot` to the Splash scene and a `ScriptedPlaythrough` to Main once it
 loads; both call the same public API real input and the EditMode tests already use
 (`GameSession.Submit`, `GameWorld.SpawnEnemy`, `AngelFlight.Teleport`, `GrappleController.SetButtonHeld`),

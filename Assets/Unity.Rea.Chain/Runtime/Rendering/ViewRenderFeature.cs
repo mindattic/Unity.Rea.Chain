@@ -30,7 +30,7 @@ namespace MindAttic.Chain
     /// </summary>
     public sealed class ViewRenderFeature : ScriptableRendererFeature
     {
-        /// <summary>The override shader's name (Assets/Unity.Chain/Rendering/ViewOptions.shader).</summary>
+        /// <summary>The override shader's name (Assets/Unity.Rea.Chain/Rendering/ViewOptions.shader).</summary>
         public const string ShaderName = "Hidden/MindAttic/Chain/ViewOptions";
 
         private static readonly int TexturedId = Shader.PropertyToID("_Textured");

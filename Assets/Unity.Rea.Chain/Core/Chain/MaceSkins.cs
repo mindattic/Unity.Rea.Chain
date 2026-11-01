@@ -38,7 +38,7 @@ namespace MindAttic.Chain.Core
 
     /// <summary>
     /// chain.json's <c>maceSkins</c> (UNI-T43): the skin every mace starts in (<c>mode</c>, the setting) and each
-    /// skin's picture as Assets/Unity.Chain/Art/Chain holds it (<c>files</c>, one for every <see cref="MaceMode"/>).
+    /// skin's picture as Assets/Unity.Rea.Chain/Art/Chain holds it (<c>files</c>, one for every <see cref="MaceMode"/>).
     /// </summary>
     public sealed class MaceSkinData
     {

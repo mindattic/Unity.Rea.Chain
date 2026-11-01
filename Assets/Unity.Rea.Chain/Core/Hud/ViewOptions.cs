@@ -33,7 +33,7 @@ namespace MindAttic.Chain.Core
     /// <c>bRenderWireframe</c> (F1), <c>bRenderTextures</c> (F2), <c>bBackFaceCulling</c> (F3), <c>bDrawFPS</c> (F4),
     /// <c>bMenu</c> (Tab) and <c>bZone</c> (E). Root.vb's <c>Reset</c> puts the first five back (<see cref="Reset"/>):
     /// solid, textured, no culling, the frame rate shown, the menu closed; it never touches <c>bZone</c>, so the hit box
-    /// overlay stays as E left it. The renderer reads the first three (UNI-T56: Unity.Chain's ViewRenderFeature), the
+    /// overlay stays as E left it. The renderer reads the first three (UNI-T56: Unity.Rea.Chain's ViewRenderFeature), the
     /// HUD the frame rate and the menu, and the hit box overlay <see cref="Zones"/> (<see cref="HitZones"/>).
     /// </summary>
     public sealed class ViewOptions

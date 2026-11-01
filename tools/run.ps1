@@ -1,9 +1,9 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-    Rebuilds Unity.Chain (tools\build.ps1: regenerates the scene and project settings, then the
+    Rebuilds Unity.Rea.Chain (tools\build.ps1: regenerates the scene and project settings, then the
     Windows player) only when Assets/Packages/ProjectSettings changed since the last deploy, and
-    publishes a standalone copy to C:\Apps\Unity.Chain\ -- same process Unity.SpaceGod and
+    publishes a standalone copy to C:\Apps\Unity.Rea.Chain\ -- same process Unity.SpaceGod and
     Unity.GridGame use to always have a fresh, independent deployed copy instead of a possibly-stale
     one.
 
@@ -11,16 +11,16 @@
     1. Pulls latest (skipped if the worktree has uncommitted changes, or the pull fails).
     2. Skips the rebuild if nothing under Assets/Packages/ProjectSettings changed since the last
        deploy at this commit (unless -Force).
-    3. Stops any running Unity.Chain.exe process (dev copy or deployed copy).
+    3. Stops any running Unity.Rea.Chain.exe process (dev copy or deployed copy).
     4. Clears Builds\Windows -- the build OUTPUT only, never Library\ -- so the build below is
        never a stale incremental copy.
-    5. Runs tools\build.ps1 (Unity batch mode; requires the Editor closed) -> Builds\Windows\Unity.Chain.exe.
+    5. Runs tools\build.ps1 (Unity batch mode; requires the Editor closed) -> Builds\Windows\Unity.Rea.Chain.exe.
        Its own Unity run captures Logs\build-scene.log, Logs\build-settings.log and Logs\build-player.log.
-    6. Copies Builds\Windows\* -> C:\Apps\Unity.Chain\, refreshes the Desktop shortcut, and
+    6. Copies Builds\Windows\* -> C:\Apps\Unity.Rea.Chain\, refreshes the Desktop shortcut, and
        optionally launches it.
 
 .PARAMETER Launch
-    After publishing, immediately run the deployed Unity.Chain.exe.
+    After publishing, immediately run the deployed Unity.Rea.Chain.exe.
 
 .PARAMETER Force
     Rebuild and republish even when no player source changed since the last deploy (skips only
@@ -30,7 +30,7 @@
     This script never prompts, so agents and /deploy can run it unattended. The repo-root
     run.bat (the Desktop shortcut's target) is the interactive entry point: it asks
     1) Deploy & Run (this script with -Force -Launch) or 2) Run (starts the copy already in
-    C:\Apps\Unity.Chain without calling this script, deploying first if none is there).
+    C:\Apps\Unity.Rea.Chain without calling this script, deploying first if none is there).
 
 .EXAMPLE
     powershell -ExecutionPolicy Bypass -File tools\run.ps1
@@ -42,9 +42,9 @@ param([switch]$Launch, [switch]$Force)
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
-$repoDir   = Split-Path $PSScriptRoot   # tools\ -> Unity.Chain\
-$out       = 'C:\Apps\Unity.Chain'
-$exeName   = 'Unity.Chain.exe'
+$repoDir   = Split-Path $PSScriptRoot   # tools\ -> Unity.Rea.Chain\
+$out       = 'C:\Apps\Unity.Rea.Chain'
+$exeName   = 'Unity.Rea.Chain.exe'
 $buildDir  = Join-Path $repoDir 'Builds\Windows'
 $runBat    = Join-Path $repoDir 'run.bat'
 $marker    = Join-Path $out '.deploy-commit'
@@ -65,12 +65,12 @@ $head = (git -C $repoDir rev-parse HEAD).Trim()
 # (pull latest, rebuild, publish, launch) or 2) Run (launch the installed copy).
 # GetFolderPath, not $HOME\Desktop: OneDrive may have moved the Desktop folder.
 function Set-Shortcut([string]$exe) {
-    $shortcut = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Unity.Chain.lnk'
+    $shortcut = Join-Path ([Environment]::GetFolderPath('Desktop')) 'Unity.Rea.Chain.lnk'
     $link = (New-Object -ComObject WScript.Shell).CreateShortcut($shortcut)
     $link.TargetPath       = $runBat
     $link.WorkingDirectory = $repoDir
     $link.IconLocation     = "$exe,0"
-    $link.Description      = 'Unity.Chain: 1) Deploy & Run  2) Run'
+    $link.Description      = 'Unity.Rea.Chain: 1) Deploy & Run  2) Run'
     $link.Save()
     Write-Host "    Shortcut -> $shortcut" -ForegroundColor Gray
 }
@@ -107,7 +107,7 @@ if ($upToDate) {
 # ── Stop running instance ──────────────────────────────────────────────────
 Write-Host ''
 Write-Host '  Stopping running instance...' -ForegroundColor Yellow
-$procs = Get-Process 'Unity.Chain' -ErrorAction SilentlyContinue
+$procs = Get-Process 'Unity.Rea.Chain' -ErrorAction SilentlyContinue
 if ($procs) {
     $procs | Stop-Process -Force
     Write-Host "    Stopped ($(@($procs).Count) process(es))" -ForegroundColor DarkYellow

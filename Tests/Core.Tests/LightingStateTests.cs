@@ -54,6 +54,37 @@ namespace MindAttic.Chain.Tests
         }
 
         [Test]
+        public void Spike_TwentyFourMinuteDay_LightsHalfOfPlayInASingleChannel()
+        {
+            // U.CHN-T91 (BIBLE D6): the evidence behind keeping the original's still day. Over one 1440 s cycle the
+            // tint is a bare red (Dusk) or bare blue (Night) for all but the 4.25 s ramps, so roughly half of lit play
+            // shows only one colour channel, and the zone overlay's 0, 128, 255 goes black under the red Dusk.
+            var state = new LightingState(LightingState.Settings.TwentyFourMinuteDay);
+            var steps = (int)(1440f / Step + 0.5f);
+            var singleChannel = 0;
+            var zoneBlackAtDusk = false;
+            for (var i = 0; i < steps; i++)
+            {
+                state.Step(Step);
+                var zeros = (state.Red == 0f ? 1 : 0) + (state.Green == 0f ? 1 : 0) + (state.Blue == 0f ? 1 : 0);
+                if (zeros == 2)
+                {
+                    singleChannel++;
+                }
+
+                if (state.Period == DayPeriod.Dusk && zeros == 2)
+                {
+                    var tint = state.Tint;
+                    zoneBlackAtDusk = 0f * tint.R + (128f / 255f) * tint.G + 1f * tint.B == 0f;
+                }
+            }
+
+            var share = singleChannel * Step / 1440f;
+            Assert.That(share, Is.InRange(0.45f, 0.5f), "Dusk (~236 s red) plus Night (~476 s blue) of a 1440 s day");
+            Assert.IsTrue(zoneBlackAtDusk, "the zone colour 0, 128, 255 has no red, so a red Dusk lights it black");
+        }
+
+        [Test]
         public void TheOriginalDayLength_NeverLeavesDay()
         {
             var state = new LightingState();

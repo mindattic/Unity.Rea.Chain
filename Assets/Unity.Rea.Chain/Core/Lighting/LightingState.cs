@@ -60,7 +60,7 @@ namespace MindAttic.Chain.Core
     /// The day length is the original's (BIBLE D6, settled by U.CHN-T82): <c>dayLength</c> 1e10 s, so the cycle
     /// stays in Day all session; only a script (RUN NIGHT, CHANGE TIME DAYPERIOD) moves the period on. The
     /// 24-minute day of UNI-T46 is <see cref="Settings.TwentyFourMinuteDay"/>, a data option only
-    /// (spike U.CHN-T91). One fix (BIBLE D16): with lighting off the original
+    /// (spike U.CHN-T91 judged it plays worse: about half of lit play in a bare red or blue tint). One fix (BIBLE D16): with lighting off the original
     /// just stopped updating the device, freezing whatever colour was last set; here off means unlit
     /// (no tint), the cycle holding where it is until lighting comes back on, as renderLight skipped it.
     /// </summary>

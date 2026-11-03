@@ -426,8 +426,8 @@ namespace MindAttic.Chain.Core
                         case 'r': builder.Append('\r'); break;
                         case 't': builder.Append('\t'); break;
                         case 'u':
-                            if (_at + 4 > _text.Length ||
-                                !int.TryParse(_text.Substring(_at, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var code))
+                            if (_at + 4 > _text.Length || !IsHex4(_text, _at) ||
+                                !int.TryParse(_text.Substring(_at, 4), NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out var code))
                             {
                                 throw Error("a \\u escape needs four hex digits");
                             }
@@ -441,6 +441,20 @@ namespace MindAttic.Chain.Core
                 }
             }
 
+            private static bool IsHex4(string text, int at)
+            {
+                for (var i = at; i < at + 4; i++)
+                {
+                    var c = text[i];
+                    if (!((c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F')))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
             private double ReadNumber()
             {
                 var start = _at;
@@ -449,9 +463,15 @@ namespace MindAttic.Chain.Core
                     _at++;
                 }
 
+                var digitsStart = _at;
                 if (!Digits())
                 {
                     throw Error("a number needs digits");
+                }
+
+                if (_at - digitsStart > 1 && _text[digitsStart] == '0')
+                {
+                    throw Error("a number cannot start with a leading zero");
                 }
 
                 if (Peek('.'))
@@ -477,7 +497,14 @@ namespace MindAttic.Chain.Core
                     }
                 }
 
-                return double.Parse(_text.Substring(start, _at - start), NumberStyles.Float, CultureInfo.InvariantCulture);
+                try
+                {
+                    return double.Parse(_text.Substring(start, _at - start), NumberStyles.Float, CultureInfo.InvariantCulture);
+                }
+                catch (OverflowException)
+                {
+                    throw Error("a number is too large");
+                }
             }
 
             private bool Digits()

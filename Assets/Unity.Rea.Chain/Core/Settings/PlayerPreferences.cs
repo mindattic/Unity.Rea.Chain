@@ -157,9 +157,17 @@ namespace MindAttic.Chain.Core
             var preferences = store.Read() ?? new PlayerPreferences();
             if (!preferences.StockVolumesApplied)
             {
-                preferences.MusicVolume = stock.MusicVolume;
-                preferences.SfxVolume = stock.SfxVolume;
-                preferences.StockVolumesApplied = true;
+                // A channel the store reports muted and at zero is a session mute (the store silences it, e.g.
+                // Profiles.SessionMuted): keep it silent, and leave the profile unstamped so a later normal launch
+                // still gets the stock volumes.
+                var sessionSilenced = (preferences.MuteMusic && preferences.MusicVolume <= 0f)
+                    || (preferences.MuteSfx && preferences.SfxVolume <= 0f);
+                if (!sessionSilenced)
+                {
+                    preferences.MusicVolume = stock.MusicVolume;
+                    preferences.SfxVolume = stock.SfxVolume;
+                    preferences.StockVolumesApplied = true;
+                }
             }
 
             if (!preferences.HasAmbientVolume)

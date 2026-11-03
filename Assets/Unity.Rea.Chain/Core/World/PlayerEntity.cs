@@ -260,7 +260,9 @@ namespace MindAttic.Chain.Core
             };
             Grapple = new Grapple(_setup.ThrowMultiplier);
             _tuned = false;
-            ButtonHeld = false;
+            // ButtonHeld is kept: it is the player's physical button, not round state. Input.vb's getMouse reads the button
+            // every frame, so one still held through a reset arms the fresh grapple on the next step; clearing it here left
+            // the seat's input (which only sends a change) and the world disagreeing until the button was pressed again.
             PressedSinceStep = false;
             PreviousMaceIndex = -1;
             ApplyMace();

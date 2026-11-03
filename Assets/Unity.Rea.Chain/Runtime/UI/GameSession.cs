@@ -398,7 +398,9 @@ namespace MindAttic.Chain
 
             foreach (var gameEvent in _world.TakeEvents())
             {
-                if (gameEvent is PauseChanged)
+                // A reset unpauses without a PauseChanged of its own (R while paused, or with the config screen open), so
+                // it must give the time scale back too, or the unpaused world stays frozen at timeScale 0.
+                if (gameEvent is PauseChanged || gameEvent is WorldReset)
                 {
                     ApplyTimeScale();
                 }

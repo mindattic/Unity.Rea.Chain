@@ -69,6 +69,7 @@ namespace MindAttic.Chain
         private SwingSoundTrigger _swing;
         private Vector2 _previousAnchor;
         private bool _hasAnchor;
+        private ChainSimulation _measured;
         private GameSession _subscribed;
 
         /// <summary>Raised for every sound played (also when its clip set is empty or muted), with the chosen clip (may be null) and volume.</summary>
@@ -282,6 +283,15 @@ namespace MindAttic.Chain
         /// </summary>
         private float MeasureSwingSpeed(float deltaTime)
         {
+            // A new chain (a reset puts the angel home, or a retune rebuilds it): the hand jumped, it did not swing, so
+            // there is no previous anchor to measure from (else every reset played a whoosh off the teleport).
+            var simulation = chain.Simulation;
+            if (simulation != _measured)
+            {
+                _measured = simulation;
+                _hasAnchor = false;
+            }
+
             var anchor = chain.GetLinkPosition(0);
             var anchorVelocity = _hasAnchor && deltaTime > 0f ? (anchor - _previousAnchor) / deltaTime : Vector2.zero;
             _previousAnchor = anchor;

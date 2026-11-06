@@ -96,7 +96,7 @@ Unity.GridGame's):
 ```
 build.bat     # tools/build.ps1: the three -executeMethod calls above, logged to Logs/build-*.log
 test.bat      # tools/test.ps1: Core.Tests, then EditMode and PlayMode (includes MainSceneSmokeTests)
-run.bat       # asks 1) Deploy & Run: tools/run.ps1 -Force -Launch (pull, build.bat, publish to
+run.bat       # asks 1) Deploy & Run: run.ps1 -Force -Launch (pull, build.bat, publish to
               # C:\Apps\Unity.Rea.Chain, refresh the Desktop shortcut, launch) or 2) Run: the installed copy
 play.bat      # tools/play.ps1: launch Builds/Windows/Unity.Rea.Chain.exe for manual/dev testing,
               # muted by default (building it first if missing)

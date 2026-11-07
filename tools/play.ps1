@@ -18,6 +18,10 @@
     tools/unity.ps1 -Method MindAttic.Capture.Unity.Editor.CaptureBuild.BuildWindows) with -demo and
     -capture <mode>, wait for it and return its exit code (non-zero when a shot or the clip failed).
     Still muted unless -Sound. Example: -Capture 'screen 1000' or -Capture video.
+.PARAMETER Headless
+    Launch with no window for scripted testing (U.CHN-T113): runs the player through
+    ..\Unity.Shared\tools\Start-Headless.ps1 (--headless -batchmode -nographics, log to Logs/play.log), waits for its
+    MINDATTIC_HEADLESS_READY line and returns. Off by default; not combined with -Capture.
 .PARAMETER Wait
     Wait for the player to exit and return its exit code.
 .EXAMPLE
@@ -29,6 +33,7 @@ param(
     [switch]$Build,
     [switch]$Sound,
     [switch]$Wait,
+    [switch]$Headless,
     [string]$Capture,
     [Parameter(ValueFromRemainingArguments = $true)][string[]]$PlayerArgs
 )
@@ -50,6 +55,14 @@ if (-not $Capture -and ($Build -or -not (Test-Path $exe))) {
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 New-Item -ItemType Directory -Force (Split-Path $log) | Out-Null
+
+if ($Headless) {
+    # U.CHN-T113: the shared launcher adds --headless -batchmode -nographics -logFile and waits for the ready line.
+    $headlessArgs = @{ Exe = $exe; LogFile = $log; Wait = $true }
+    if ($PlayerArgs) { & (Join-Path $root '..\Unity.Shared\tools\Start-Headless.ps1') @headlessArgs @PlayerArgs }
+    else { & (Join-Path $root '..\Unity.Shared\tools\Start-Headless.ps1') @headlessArgs }
+    exit $LASTEXITCODE
+}
 
 $arguments = @('-logFile', "`"$log`"")
 if (-not $Sound) { $arguments += '-muted' }

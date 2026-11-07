@@ -105,6 +105,13 @@ play.bat      # tools/play.ps1: launch Builds/Windows/Unity.Rea.Chain.exe for ma
 The engine-free rules are tested by `Tests/Core.Tests` (`dotnet test Tests/Core.Tests`, or
 `./run-core-tests.ps1`).
 
+### Headless launches
+
+For scripted testing (off by default), `powershell -File tools/play.ps1 -Headless` runs `Builds/Windows/Unity.Rea.Chain.exe` with no
+window through the shared launcher (`..\Unity.Shared\tools\Start-Headless.ps1`: `--headless -batchmode -nographics`, log to
+`Logs/play.log`) and waits for the `MINDATTIC_HEADLESS_READY` log line. The Splash scene hands over to Main by itself and the game
+has no main menu, so there is nothing further to skip. Without `--headless` nothing changes.
+
 ### Muted launches
 
 `play.bat` (`tools/play.ps1`) launches `Builds/Windows/Unity.Rea.Chain.exe` muted: it sets
